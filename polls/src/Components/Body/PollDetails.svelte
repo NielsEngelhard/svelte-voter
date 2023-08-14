@@ -2,13 +2,21 @@
     import Card from "../../Shared/Card.svelte"
     import PollStore from '../../Stores/PollStore'
     import CustomButton from '../../Shared/CustomButton.svelte'
+    import { tweened } from 'svelte/motion';
 
     export let poll;
 
     // reactive values
     $: totalVotes = poll.votesA + poll.votesB;
-    $: percentA = totalVotes > 0 ? Math.floor((100 / totalVotes) * poll.votesA) : 0;
-    $: percentB = totalVotes > 0 ? Math.floor((100 / totalVotes) * poll.votesB) : 0;
+    $: percentA = Math.floor((100 / totalVotes) * poll.votesA) || 0;
+    $: percentB = Math.floor((100 / totalVotes) * poll.votesB) || 0;
+
+    // tweened percentages (smooth animation)
+    const tweenedA = tweened(0);
+    const tweenedB = tweened(0);
+    $: tweenedA.set(percentA);
+    $: tweenedB.set(percentB);
+    //$: console.log($tweenedA, $tweenedB);
 
     const handleVote = (id, option) => {
         PollStore.update(currentPolls => {
@@ -39,11 +47,11 @@
         <h3>{ poll.question }</h3>
         <p>Total votes: { totalVotes }</p>
         <div class="answer disable-text-select" on:click={() => handleVote(poll.id, 'a')}>
-            <div class="percent percent-a" style="width: {percentA}%"></div>
+            <div class="percent percent-a" style="width: {$tweenedA}%"></div>
             <span>{ poll.answerA } ({ poll.votesA })</span>
         </div>
         <div class="answer disable-text-select" on:click={() => handleVote(poll.id, 'b')}>
-            <div class="percent percent-b" style="width: {percentB}%"></div>
+            <div class="percent percent-b" style="width: {$tweenedB}%"></div>
             <span>{ poll.answerB } ({ poll.votesB })</span>
         </div>
         <div class="delete">
