@@ -4,8 +4,10 @@
 	import Tabs from './Shared/Tabs.svelte'
 	import CreatePollForm from './Components/Body/CreatePollForm.svelte'
 	import PollList from './Components/Body/PollList.svelte'
+    import CarouselDemo from './Components/Body/CarouselDemo.svelte';
+    import ImageAnimation from './Components/Body/ImageAnimation.svelte';
 
-	let tabItems = ['Current Polls', 'Add New Poll'];
+	let tabItems = ['Current Polls', 'Add New Poll', 'Carousel', 'Image Animation'];
 	let activeItem = tabItems[0];
 
 	const tabChanged = (e) => {
@@ -25,6 +27,10 @@
 		<PollList />
 	{:else if activeItem === 'Add New Poll'}
 		<CreatePollForm on:addNewPoll={handleAddNewPoll} />
+	{:else if activeItem === 'Carousel'}
+		<CarouselDemo />
+	{:else if activeItem === 'Image Animation'}
+		<ImageAnimation />				
 	{/if}
 </main>
 

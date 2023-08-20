@@ -22,7 +22,7 @@
 <div class="poll-list">
     <!-- The $ in $PollStore automatically subscribes on the data :o and ALSO AUTOMATICALLY UNSUBSCRIBES -->
     {#each $PollStore as poll (poll.id)}
-        <div in:fade out:scale|local animate:flip={{duration: 500}}>
+        <div in:fade out:slide animate:flip={{duration: 500}}>
             <PollDetails poll={poll} />
         </div>
     {/each}
